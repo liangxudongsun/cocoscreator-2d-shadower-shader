@@ -1,11 +1,11 @@
 import { _decorator, Component, Node, sp, v3 } from 'cc';
-import { 八戒动画列表, 小游码匠八戒事件对象, 小游码匠八戒事件类型, 相机偏移X最大值, 角色属性 } from './CoustmEvent';
+import { 八戒动画列表, 小游码匠八戒事件对象, 小游码匠八戒事件类型, 小游码匠游戏事件枚举, 相机偏移X最大值, 角色属性 } from './CoustmEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('HouGe')
 export class HouGe extends Component {
    
-    public zbjSpine: sp.Skeleton;
+    public 猴哥Spine: sp.Skeleton;
     private isAttacking: boolean = false;
     private 可以走了吗: boolean = false;
 
@@ -33,8 +33,8 @@ export class HouGe extends Component {
      * @初始化属性
      */
     private initProperty(): void {
-        this.zbjSpine = this.node.getComponent(sp.Skeleton);
-        this.zbjSpine.timeScale = 角色属性.动画时间倍率;
+        this.猴哥Spine = this.node.getComponent(sp.Skeleton);
+        this.猴哥Spine.timeScale = 角色属性.动画时间倍率;
     }
     /**
      * @小游码匠
@@ -54,13 +54,13 @@ export class HouGe extends Component {
 
     public 走起来(): void {
         this.可以走了吗 = true;
-        this.zbjSpine.setAnimation(0, 八戒动画列表.走路, true);
+        this.猴哥Spine.setAnimation(0, 八戒动画列表.走路, true);
         this.isAttacking = false;
     }
 
     public 暂停(): void {
         this.可以走了吗 = false;
-        this.zbjSpine.setAnimation(0, 八戒动画列表.站停, true);
+        this.猴哥Spine.setAnimation(0, 八戒动画列表.站停, true);
         this.isAttacking = false;
     }
 
@@ -71,12 +71,11 @@ export class HouGe extends Component {
         }
 
         this.isAttacking = true;
-        const attackTrack = this.zbjSpine.setAnimation(0, 八戒动画列表.攻击, false);
-        this.zbjSpine.setTrackCompleteListener(attackTrack, (e) => {
-            console.log(e.animation.name);
+        const attackTrack = this.猴哥Spine.setAnimation(0, 八戒动画列表.攻击, false);
+        this.猴哥Spine.setTrackCompleteListener(attackTrack, (e) => {
             this.isAttacking = false;
         });
-        this.zbjSpine.addAnimation(0, 八戒动画列表.站停, true);
+        this.猴哥Spine.addAnimation(0, 八戒动画列表.站停, true);
     }
 }
 

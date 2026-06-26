@@ -2,10 +2,18 @@ import { EventTarget } from 'cc'
 
 export const 小游码匠八戒事件对象 = new EventTarget();
 
+export enum 小游码匠游戏事件枚举 {
+    相机上下震动="相机上下震动",
+}
+
 export enum 小游码匠八戒事件类型 {
     走起来 = '走起来',
     暂停 = '暂停',
     攻击 = '攻击'
+}
+
+export enum 小游码匠Spine动画事件 {
+    攻击震动 = 'onAttacked',
 }
 
 export enum 八戒动画列表 {
