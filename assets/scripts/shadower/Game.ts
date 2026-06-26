@@ -1,10 +1,12 @@
-import { _decorator, Component, Node, resources, sp, tween, Tween, v3 } from 'cc';
+import { _decorator, AudioClip, AudioSource, Component, Node, resources, sp, tween, Tween, v3 } from 'cc';
 import { 小游码匠八戒事件类型, 小游码匠八戒事件对象, 角色属性, 相机偏移X最大值, 小游码匠游戏事件枚举 } from './CoustmEvent';
 const { ccclass, property } = _decorator;
 
 @ccclass('Game')
 export class Game extends Component {
 
+    @property({type: AudioClip, displayName: '技能音效'})
+    音效: AudioClip;
     相机: Node;
     相机是否可以走了: boolean = false;
     技能Spine: sp.Skeleton;
@@ -58,6 +60,7 @@ export class Game extends Component {
     }
 
     public 相机震动(): void {
+        this.getComponent(AudioSource).playOneShot(this.音效);
         Tween.stopAllByTarget(this.相机);
         const origin = this.相机.position.clone();
         tween(this.相机)
