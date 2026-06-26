@@ -1,0 +1,68 @@
+
+zbj.png
+size: 1781,1993
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+_0002_身体
+  rotate: true
+  xy: 2, 254
+  size: 843, 1094
+  orig: 843, 1098
+  offset: 0, 0
+  index: -1
+_0004_右腿
+  rotate: true
+  xy: 1098, 425
+  size: 672, 657
+  orig: 672, 659
+  offset: 0, 2
+  index: -1
+_0004_武器
+  rotate: false
+  xy: 2, 1099
+  size: 1777, 892
+  orig: 1777, 892
+  offset: 0, 0
+  index: -1
+刀光
+  rotate: true
+  xy: 1098, 2
+  size: 421, 548
+  orig: 421, 548
+  offset: 0, 0
+  index: -1
+
+zbj2.png
+size: 1351,1224
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+_0000_左手
+  rotate: true
+  xy: 2, 62
+  size: 580, 769
+  orig: 580, 769
+  offset: 0, 0
+  index: -1
+_0001_头
+  rotate: true
+  xy: 794, 505
+  size: 717, 543
+  orig: 717, 543
+  offset: 0, 0
+  index: -1
+_0003_右手
+  rotate: false
+  xy: 773, 2
+  size: 576, 501
+  orig: 576, 501
+  offset: 0, 0
+  index: -1
+_0005_左腿
+  rotate: false
+  xy: 2, 644
+  size: 790, 578
+  orig: 790, 579
+  offset: 0, 1
+  index: -1

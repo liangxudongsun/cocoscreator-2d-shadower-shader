@@ -1,0 +1,20 @@
+
+BorderFlow.png
+size: 229,200
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+_0000_蒙边
+  rotate: true
+  xy: 200, 107
+  size: 91, 27
+  orig: 119, 29
+  offset: 14, 1
+  index: -1
+_0001_外环
+  rotate: false
+  xy: 2, 2
+  size: 196, 196
+  orig: 200, 200
+  offset: 2, 2
+  index: -1

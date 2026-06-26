@@ -1,0 +1,242 @@
+// Copyright (c) 2017-2020 Xiamen Yaji Software Co., Ltd.
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: shadower-vs:vert
+      frag: shadower-fs:frag
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none 
+      properties:
+        alphaThreshold: { value: 0.5, editor: { range: [-1.0, 1.0], step: 0.01 } }
+        u_shadowColor: { value: [0,0,0,0.5] }
+        u_skewAngle: { value: 45.0, editor: { range: [-360.0, 360.0], step: 0.1 } }
+        u_scaleY: { value: 0.3, editor: { range: [-1.0, 1.0], step: 0.01 } }
+        u_spriteHeight: { value: 100, editor: { range: [1, 1000], step: 1 } }
+        u_spriteWidth: { value: 100, editor: { range: [1, 1000], step: 1 } }
+        u_offsetY: { value: 0, editor: { range: [-5000, 5000], step: 0.1 } }
+        u_offsetX: { value: 0, editor: { range: [-5000, 5000], step: 0.1 } }
+        
+    - vert: sprite-vs:vert 
+      frag: sprite-fs:frag
+      depthStencilState: 
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        alphaThreshold: { value: 0.5 }
+}%
+
+CCProgram shadower-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+  #if SAMPLE_FROM_RT
+    #include <common/common-define>
+  #endif
+  
+  // 阴影参数
+  layout(set = 2, binding = 0) uniform ShadowParams {
+    float u_skewAngle;
+    float u_scaleY;
+    float u_spriteHeight;
+    float u_spriteWidth;
+    float u_offsetX;
+    float u_offsetY;
+  };
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec4 color;
+  out vec2 uv0;
+
+  vec4 vert () {
+    // 原始精灵位置（用于参考）
+    vec4 originalPos = vec4(a_position, 1);
+    #if USE_LOCAL
+      originalPos = cc_matWorld * originalPos;
+    #endif
+
+    // 计算斜切值
+    float skewRad = u_skewAngle * 3.14159265 / 180.0;
+    float skew = tan(skewRad);
+    
+    // 获取当前顶点的局部Y坐标
+    float localY = a_position.y;
+    
+    // 计算底部位置（假设锚点在中心）
+    float bottomY = -u_spriteHeight / 2.0;
+    
+    // === 构建阴影位置 ===
+    vec4 shadowPos = vec4(a_position, 1);
+    #if USE_LOCAL
+      shadowPos = cc_matWorld * shadowPos;
+    #endif
+    
+    // 1. 应用斜切（X方向随Y变化）
+    // 注意：在局部坐标系中操作，然后再转换到世界
+    vec4 localShadowPos = vec4(a_position, 1);
+    localShadowPos.x += localShadowPos.y * skew;
+    localShadowPos.y *= u_scaleY;
+    
+    // 转换到世界坐标
+    #if USE_LOCAL
+      shadowPos = cc_matWorld * localShadowPos;
+    #else
+      shadowPos = localShadowPos;
+    #endif
+    
+    // 2. 计算自动偏移量（在局部坐标系中）
+    float autoOffsetY = bottomY * (2.0 - u_scaleY);
+    float autoOffsetX = -skew * bottomY * 0.5;
+    
+    // 应用偏移（在世界空间中）
+    shadowPos.x += autoOffsetX + u_offsetX;
+    shadowPos.y += autoOffsetY + u_offsetY;
+    
+    // 3. 计算最终投影位置
+    #if USE_PIXEL_ALIGNMENT
+      shadowPos = cc_matView * shadowPos;
+      shadowPos.xyz = floor(shadowPos.xyz);
+      shadowPos = cc_matProj * shadowPos;
+    #else
+      shadowPos = cc_matViewProj * shadowPos;
+    #endif
+
+    uv0 = a_texCoord;
+    #if SAMPLE_FROM_RT
+      CC_HANDLE_RT_SAMPLE_FLIP(uv0);
+    #endif
+    color = a_color;
+
+    return shadowPos;
+  }
+}%
+
+CCProgram sprite-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+  #if SAMPLE_FROM_RT
+    #include <common/common-define>
+  #endif
+  
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec4 color;
+  out vec2 uv0;
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1);
+
+    #if USE_LOCAL
+      pos = cc_matWorld * pos;
+    #endif
+
+    #if USE_PIXEL_ALIGNMENT
+      pos = cc_matView * pos;
+      pos.xyz = floor(pos.xyz);
+      pos = cc_matProj * pos;
+    #else
+      pos = cc_matViewProj * pos;
+    #endif
+
+    uv0 = a_texCoord;
+    #if SAMPLE_FROM_RT
+      CC_HANDLE_RT_SAMPLE_FLIP(uv0);
+    #endif
+    color = a_color;
+
+    return pos;
+  }
+}%
+
+CCProgram shadower-fs %{
+  precision highp float;
+  #include <builtin/internal/embedded-alpha>
+  #include <builtin/internal/alpha-test>
+
+  layout(set = 2, binding = 1) uniform ShadowColor {
+    vec4 u_shadowColor;
+  };
+
+  in vec4 color;
+  in vec2 uv0;
+
+  #if USE_TEXTURE
+    #pragma builtin(local)
+    layout(set = 2, binding = 2) uniform sampler2D cc_spriteTexture;
+  #endif
+
+  vec4 frag () {
+    vec4 o = vec4(1, 1, 1, 1);
+
+    #if USE_TEXTURE
+      o *= CCSampleWithAlphaSeparated(cc_spriteTexture, uv0);
+      #if IS_GRAY
+        float gray = 0.2126 * o.r + 0.7152 * o.g + 0.0722 * o.b;
+        o.r = o.g = o.b = gray;
+      #endif
+    #endif
+
+    // 应用阴影颜色
+    o.rgb = u_shadowColor.rgb;
+    o.a *= u_shadowColor.a;
+
+    ALPHA_TEST(o);
+    return o;
+  }
+}%
+
+CCProgram sprite-fs %{
+  precision highp float;
+  #include <builtin/internal/embedded-alpha>
+  #include <builtin/internal/alpha-test>
+
+  in vec4 color;
+
+  #if USE_TEXTURE
+    in vec2 uv0;
+    #pragma builtin(local)
+    layout(set = 2, binding = 12) uniform sampler2D cc_spriteTexture;
+  #endif
+
+  vec4 frag () {
+    vec4 o = vec4(1, 1, 1, 1);
+
+    #if USE_TEXTURE
+      o *= CCSampleWithAlphaSeparated(cc_spriteTexture, uv0);
+      #if IS_GRAY
+        float gray  = 0.2126 * o.r + 0.7152 * o.g + 0.0722 * o.b;
+        o.r = o.g = o.b = gray;
+      #endif
+    #endif
+
+    o *= color;
+    ALPHA_TEST(o);
+    return o;
+  }
+}%

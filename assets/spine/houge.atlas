@@ -1,0 +1,173 @@
+
+houge.png
+size: 1899,1786
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+_0000_右手
+  rotate: false
+  xy: 765, 1399
+  size: 679, 385
+  orig: 679, 385
+  offset: 0, 0
+  index: -1
+_0005_左手掌
+  rotate: false
+  xy: 2, 1650
+  size: 186, 134
+  orig: 186, 134
+  offset: 0, 0
+  index: -1
+_0006_左手
+  rotate: false
+  xy: 190, 1500
+  size: 573, 284
+  orig: 573, 284
+  offset: 0, 0
+  index: -1
+run/_0000_h-14
+  rotate: true
+  xy: 1446, 1345
+  size: 439, 451
+  orig: 440, 452
+  offset: 0, 1
+  index: -1
+run/_0001_h-13
+  rotate: true
+  xy: 1366, 901
+  size: 442, 452
+  orig: 442, 453
+  offset: 0, 1
+  index: -1
+run/_0002_h-12
+  rotate: true
+  xy: 2, 611
+  size: 445, 453
+  orig: 445, 453
+  offset: 0, 0
+  index: -1
+run/_0003_h-11
+  rotate: false
+  xy: 2, 160
+  size: 450, 449
+  orig: 450, 451
+  offset: 0, 1
+  index: -1
+run/_0004_h-10
+  rotate: false
+  xy: 457, 509
+  size: 452, 445
+  orig: 452, 447
+  offset: 0, 1
+  index: -1
+run/_0005_h-9
+  rotate: false
+  xy: 454, 58
+  size: 451, 449
+  orig: 451, 450
+  offset: 0, 0
+  index: -1
+run/_0006_h-8
+  rotate: true
+  xy: 459, 956
+  size: 441, 453
+  orig: 442, 453
+  offset: 0, 0
+  index: -1
+run/_0007_h-7
+  rotate: true
+  xy: 2, 1058
+  size: 440, 455
+  orig: 441, 455
+  offset: 0, 0
+  index: -1
+run/_0008_h-6-
+  rotate: true
+  xy: 1364, 453
+  size: 446, 455
+  orig: 446, 455
+  offset: 0, 0
+  index: -1
+run/_0009_h-5
+  rotate: true
+  xy: 907, 55
+  size: 449, 455
+  orig: 449, 455
+  offset: 0, 0
+  index: -1
+run/_0011_h-3
+  rotate: false
+  xy: 1364, 2
+  size: 452, 449
+  orig: 452, 449
+  offset: 0, 0
+  index: -1
+run/_0012_h-2
+  rotate: false
+  xy: 911, 506
+  size: 451, 447
+  orig: 451, 447
+  offset: 0, 0
+  index: -1
+run/_0013_h-1
+  rotate: true
+  xy: 914, 955
+  size: 442, 450
+  orig: 444, 451
+  offset: 1, 0
+  index: -1
+
+houge2.png
+size: 2036,1878
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+_0001_枪
+  rotate: false
+  xy: 456, 1418
+  size: 1057, 458
+  orig: 1057, 458
+  offset: 0, 0
+  index: -1
+_0002_头
+  rotate: true
+  xy: 702, 829
+  size: 587, 671
+  orig: 587, 731
+  offset: 0, 0
+  index: -1
+_0003_披风
+  rotate: false
+  xy: 2, 93
+  size: 1137, 734
+  orig: 1137, 734
+  offset: 0, 0
+  index: -1
+_0004_身体
+  rotate: false
+  xy: 1515, 1006
+  size: 519, 870
+  orig: 519, 871
+  offset: 0, 1
+  index: -1
+_0007_右腿
+  rotate: false
+  xy: 1141, 2
+  size: 841, 825
+  orig: 927, 825
+  offset: 0, 0
+  index: -1
+_0008_左腿
+  rotate: true
+  xy: 2, 861
+  size: 555, 698
+  orig: 555, 698
+  offset: 0, 0
+  index: -1
+run/_0010_h-4
+  rotate: true
+  xy: 2, 1425
+  size: 451, 452
+  orig: 451, 453
+  offset: 0, 0
+  index: -1
