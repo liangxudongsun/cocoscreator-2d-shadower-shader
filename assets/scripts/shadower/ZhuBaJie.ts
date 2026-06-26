@@ -74,7 +74,8 @@ export class ZhuBaJie extends Component {
         const skillNode = new Node('SkillEffect');
         skillNode.layer = 目标节点.layer;
         skillNode.setParent(目标节点.parent);
-        skillNode.setPosition(v3(100, -250, 0));
+        const 释放位置 = v3(目标节点.worldPosition.x + 200, 目标节点.worldPosition.y + 20, 0)
+        skillNode.setWorldPosition(释放位置);
         skillNode.scale = v3(1.6, 1.6, 1.6);
         const spine = skillNode.addComponent(sp.Skeleton);
         spine.skeletonData = this.技能SkeletonData;
